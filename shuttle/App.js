@@ -7,106 +7,75 @@
  */
 
 import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import firebase from 'firebase';
+import Login from './src/Login'
+import SplashScreen from './src/SplashScreen'
+import {createStackNavigator, createAppContainer} from 'react-navigation';
+import { setTopLevelNavigator} from './src/nearMe'
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const finalStack = createStackNavigator({
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+    screen1: {
+        screen: Login,
+        navigationOptions:{
+            header: null
+        }
+    }
+},{})
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+const AppContainer = createAppContainer(finalStack);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+export default class App extends Component {
+    state = {loggedIn:null}
+    componentWillMount(){
+        if (!firebase.apps.length) {
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+            firebase.initializeApp({
+                apiKey: "AIzaSyD8e5uCCTmuFjn-CmKNaxdmaNLeZJ6UO9M",
+                authDomain: "shuttle-34268.firebaseapp.com",
+                databaseURL: "https://shuttle-34268.firebaseio.com",
+                projectId: "shuttle-34268",
+                storageBucket: "",
+                messagingSenderId: "241387829278",
+                appId: "1:241387829278:web:1e85379f28043062"
+            });
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+        }
 
-export default App;
+        firebase.auth().onAuthStateChanged((user)=>{
+            if(user){
+                this.setState({loggedIn:true})
+            }else{
+                this.setState({loggedIn:false})
+            }
+
+        });
+    }
+
+    render() {
+        switch(this.state.loggedIn){
+            default:
+                return(<SplashScreen/> )
+            case false:
+                return (<AppContainer
+                    ref={(navigatorRef) => {setTopLevelNavigator(navigatorRef);}} />);
+
+        }
+    }
+}
+
+const style = {
+    headerStyle:{
+        borderWidth:0,
+        height: 50,
+        margin: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#efebe9'
+    },
+    headerText:{
+        fontSize:25,
+        fontWeight: '300',
+        color: 'black'
+    }
+}
