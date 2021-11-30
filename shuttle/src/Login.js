@@ -38,6 +38,7 @@ export default class Login extends Component {
                 </Text>
             );
         } else {
+            this.clearForm()
             return (
                 <Spinner/>
             );
