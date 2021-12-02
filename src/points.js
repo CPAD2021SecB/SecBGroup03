@@ -1,36 +1,34 @@
-import { View, Text, TouchableOpacity, Image, Modal, TouchableHighlight, ScrollView } from 'react-native';
-import React , {Component} from 'react';
-import DrawerIcon from './logo/drawerMenu.png'
-import Card from './Card'
-import CardSection from './CardSection';
-import firebase from 'firebase'
-
+import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
+import React, {Component} from 'react';
+import DrawerIcon from './logo/drawerMenu.png';
+import Card from './Card';
+import firebase from 'firebase';
 
 class Points extends Component {
-    constructor(props){
-        super(props)
-        this.state={
-            points: 0
-        }
+    constructor(props) {
+        super(props);
+        this.state = {
+            points: 0,
+        };
     }
 
-    componentWillMount(){
-        const uid = firebase.auth().currentUser.uid
+    componentWillMount() {
+        const uid = firebase.auth().currentUser.uid;
         firebase.database().ref('users/' + uid).on('value', (data) => {
-            console.log(data.toJSON())
-            const user = data.toJSON()
+            console.log(data.toJSON());
+            const user = data.toJSON();
             this.setState({
-                points: user.points
-            })
-        })
+                points: user.points,
+            });
+        });
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <View>
                 <View style={style.headerStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.openDrawer()} >
-                        <Image source={DrawerIcon} style={{height:25, width:25, marginLeft:10}} />
+                    <TouchableOpacity onPress={() => this.props.navigation.openDrawer()}>
+                        <Image source={DrawerIcon} style={{height: 25, width: 25, marginLeft: 10}}/>
                     </TouchableOpacity>
                     <Text style={style.headerText}>
                         Points
@@ -68,38 +66,38 @@ class Points extends Component {
 }
 
 const style = {
-    headerStyle:{
-        borderWidth:0,
+    headerStyle: {
+        borderWidth: 0,
         height: 50,
         margin: 0,
         alignItems: 'center',
         justifyContent: 'flex-start',
         backgroundColor: '#efebe9',
         flexDirection: 'row',
-        marginBottom : 10
+        marginBottom: 10,
     },
-    headerText:{
-        fontSize:25,
+    headerText: {
+        fontSize: 25,
         fontWeight: '300',
         color: 'black',
-        padding: 110
+        padding: 110,
     },
     textStyle: {
 
         color: 'black',
-        marginLeft: 10
+        marginLeft: 10,
     },
     viewStyle: {
-        margin: 10
+        margin: 10,
     },
     pointStyle: {
         marginLeft: 10,
         color: 'green',
-        fontSize: 30
+        fontSize: 30,
     },
     faqStyle: {
-        marginLeft:10,
-        fontSize: 15
-    }
-}
-export default Points
+        marginLeft: 10,
+        fontSize: 15,
+    },
+};
+export default Points;
