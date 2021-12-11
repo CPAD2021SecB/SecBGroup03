@@ -23,6 +23,7 @@ import Points from './src/points';
 import {Image} from 'react-native';
 import NearIcon from './src/logo/nearme.png';
 import OutletAddress from './src/multipleAddress';
+import OutletDetail from './src/outletDetailPage'
 
 //accounts drawer
 const drawerNav = createDrawerNavigator(
@@ -65,6 +66,31 @@ const NearStack = createStackNavigator({
                 paddingLeft: 30
             }
         }
+    },
+    screen8: {
+        screen: OutletDetail,
+        navigationOptions: ({navigation}) => ({
+            //title: 'OutletDetail',
+            title: navigation.state.params.outlet.name,
+            headerStyle:{
+                borderWidth:0,
+                height: 50,
+                margin: 0,
+                position: 'absolute',
+                backgroundColor: '#efebe9',
+                textAlign: 'center',
+                flex: 1
+
+            },
+            headerTitleStyle: {
+                fontSize:25,
+                fontWeight: '300',
+                color: 'black',
+                //paddingLeft: 30,
+
+            },
+
+        })
     },
 
 },{headerLayoutPreset: 'center'})
