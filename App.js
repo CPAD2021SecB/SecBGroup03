@@ -21,7 +21,8 @@ import Account from './src/account';
 import AccIcon from './src/logo/account.png';
 import Points from './src/points';
 import {Image} from 'react-native';
-import NearIcon from './src/logo/nearme.png'
+import NearIcon from './src/logo/nearme.png';
+import OutletAddress from './src/multipleAddress';
 
 //accounts drawer
 const drawerNav = createDrawerNavigator(
@@ -49,7 +50,22 @@ const NearStack = createStackNavigator({
         screen: nearMe,
         navigationOptions:{
             header: null
-        }}
+        }},
+    screen7: {
+        screen: OutletAddress,
+        navigationOptions:{
+            title: 'Outlet Address',
+            headerStyle:{
+                backgroundColor: '#efebe9'
+            },
+            headerTitleStyle: {
+                fontSize:25,
+                fontWeight: '300',
+                color: 'black',
+                paddingLeft: 30
+            }
+        }
+    },
 
 },{headerLayoutPreset: 'center'})
 
