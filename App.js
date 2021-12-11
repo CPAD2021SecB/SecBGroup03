@@ -14,12 +14,15 @@ import {
     createStackNavigator,
     createAppContainer,
     createDrawerNavigator,
+    createBottomTabNavigator,
 } from 'react-navigation';
-import {setTopLevelNavigator} from './src/nearMe';
+import nearMe, {setTopLevelNavigator} from './src/nearMe';
 import Account from './src/account';
 import AccIcon from './src/logo/account.png';
 import Points from './src/points';
 import {Image} from 'react-native';
+import NearIcon from './src/logo/nearme.png';
+import OutletAddress from './src/multipleAddress';
 
 //accounts drawer
 const drawerNav = createDrawerNavigator(
@@ -41,31 +44,68 @@ const AccStack = createStackNavigator({
     },
 }, {});
 
+//nearme stack
+const NearStack = createStackNavigator({
+    screen6: {
+        screen: nearMe,
+        navigationOptions:{
+            header: null
+        }},
+    screen7: {
+        screen: OutletAddress,
+        navigationOptions:{
+            title: 'Outlet Address',
+            headerStyle:{
+                backgroundColor: '#efebe9'
+            },
+            headerTitleStyle: {
+                fontSize:25,
+                fontWeight: '300',
+                color: 'black',
+                paddingLeft: 30
+            }
+        }
+    },
+
+},{headerLayoutPreset: 'center'})
+
 // bottom tabs
-const AppNavigator = createBottomTabNavigator(
-    {
-        Account: {
-            screen: AccStack,
-            navigationOptions: {
-                tabBarIcon: () => (
-                    <Image
-                        source={AccIcon}
-                        style={{height: 30, width: 30}}
-                    />
-                ),
-            },
+const AppNavigator = createBottomTabNavigator({
+    NearMe: {
+        screen: NearStack,
+        navigationOptions: {
+            tabBarIcon: () => (
+                <Image
+                    source={NearIcon}
+                    style={{height: 30, width: 30}}
+                />
+            ),
         },
-    }, {
-        tabBarOptions: {
-            activeTintColor: 'black',
-            activeBackgroundColor: '#f5f5f5',
-            showIcon: true,
-            labelStyle: {
-                fontWeight: '200',
-            },
-            showLabel: true,
+    },
+
+    Account: {
+        screen: AccStack,
+        navigationOptions: {
+            tabBarIcon: () => (
+                <Image
+                    source={AccIcon}
+                    style={{height: 30, width: 30}}
+                />
+            ),
         },
-    });
+    },
+}, {
+    tabBarOptions: {
+        activeTintColor: 'black',
+        activeBackgroundColor: '#f5f5f5',
+        showIcon: true,
+        labelStyle: {
+            fontWeight: '200',
+        },
+        showLabel: true,
+
+    },
+});
 
 const finalStack = createStackNavigator(
     {
