@@ -1,214 +1,291 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React, {Component} from 'react';
-import firebase from 'firebase';
+import { Text , View , Image } from 'react-native';
+import { createAppContainer , createBottomTabNavigator , createDrawerNavigator , createStackNavigator , createMaterialTopTabNavigator} from 'react-navigation';
+import Near from './src/Near';
+import Explore from './src/Explore';
+import EandO from './src/EandO';
+import Account from './src/Account';
+import Points from './src/Points';
+import Upcoming from './src/Upcoming';
+import Expired from './src/Expired';
+import Contact from './src/Contact';
+import AccIcon from './src/Logo/account.png';
+import ExpIcon from './src/Logo/explore.png'
+import Nodisplay from './src/Nodisplay';
+import Offers from './src/Offers';
+import EOIcon from './src/Logo/eventsandoffers.png';
+import Outletdetails from './src/Outletdetails';
+import NearIcon from './src/Logo/nearme.png';
+import Outletaddress from './src/Outletaddress';
+import Confirmation from './src/Confirmation';
+import {setTopLevelNavigator} from './src/Near';
 import Login from './src/Login';
+import SignUp from './src/SignUp';
+import Otp from './src/Otp';
+import AboutEvent from './src/AboutEvent';
+import BookEvent from './src/BookEvent';
+import EventConfirm from './src/EventConfirm';
+import firebase from 'firebase';
+import Spinner from './src/ActivityIndicator';
+import SpalshScreen from './src/SplashScreen';
 import SplashScreen from './src/SplashScreen';
-import {
-    createStackNavigator,
-    createAppContainer,
-    createDrawerNavigator,
-    createBottomTabNavigator,
-} from 'react-navigation';
-import nearMe, {setTopLevelNavigator} from './src/nearMe';
-import Account from './src/account';
-import AccIcon from './src/logo/account.png';
-import Points from './src/points';
-import {Image} from 'react-native';
-import NearIcon from './src/logo/nearme.png';
-import OutletAddress from './src/multipleAddress';
-import OutletDetail from './src/outletDetailPage'
 
-//accounts drawer
-const drawerNav = createDrawerNavigator(
-    {
-        Account: Account,
-        Points: Points,
+
+
+//outlet details material navtab
+/* const AppNavigator6 = createBottomTabNavigator({
+  Menu:Menu,
+  Events:OutletEvents,
+},{}) */
+
+//near me stack.
+const AppNavigator5 = createStackNavigator({
+  screen5:{
+    screen : Near,
+    navigationOptions:{header:null}
+  },
+  screen1:Outletaddress,
+  screen2:{
+    screen:Outletdetails,
+    navigationOptions:({navigation}) => ({
+      title: navigation.state.params.outlet.name,
+      headerStyle:{
+        backgroundColor:'#fff'
+      },
+      headerTitleStyle:{
+        fontSize : 20,
+        color: 'black',
+        fontWeight:'100'
+      },
+    
+    }),
+  },
+  screen6: Confirmation,
+  screen7: AboutEvent,
+  
+  screen11: EventConfirm,
+
+},{headerLayoutPreset:'center'})
+
+//events and offers top navbar
+const AppNavigator4 = createMaterialTopTabNavigator({
+  Events: EandO,
+  Offers: Offers,
+},{
+  tabBarOptions:{
+    style:{
+      backgroundColor:'white',
     },
-    {},
-);
-
-//account stack
-const AccStack = createStackNavigator({
-    screen5: {
-        screen: drawerNav,
-        navigationOptions: {
-            header: null,
-
-        },
+    activeTintColor:'black',
+    inactiveTintColor:'gray',
+    indicatorStyle:{
+      backgroundColor:'black',
     },
-}, {});
+  }
+})
+//events and offers stack
+const AppNavigator3 = createStackNavigator({
+  screen:{
+    screen : AppNavigator4,
+    navigationOptions:{header:()=>(
+      <View style = {styles.headerStyle} >
+        <Text style = {styles.textStyle}>Events and Offers</Text>
+      </View>
+      )}
+  },
+  screen10:Nodisplay,
+  
+  screen13:{
+    screen:Outletdetails,
+    navigationOptions:({navigation}) => ({
+      title: navigation.state.params.outlet.name,
+      headerStyle:{
+        backgroundColor:'#fff'
+      },
+      headerTitleStyle:{
+        fontSize : 20,
+        color: 'black',
+        fontWeight:'100'
+      },
+    
+    }),
+  },
+  screen14: Confirmation,
+  screen15: AboutEvent,
+  
+  screen17: EventConfirm,
+},{})
 
-//nearme stack
-const NearStack = createStackNavigator({
-    screen6: {
-        screen: nearMe,
-        navigationOptions:{
-            header: null
-        }},
-    screen7: {
-        screen: OutletAddress,
-        navigationOptions:{
-            title: 'Outlet Address',
-            headerStyle:{
-                backgroundColor: '#efebe9'
-            },
-            headerTitleStyle: {
-                fontSize:25,
-                fontWeight: '300',
-                color: 'black',
-                paddingLeft: 30
-            }
-        }
-    },
-    screen8: {
-        screen: OutletDetail,
-        navigationOptions: ({navigation}) => ({
-            //title: 'OutletDetail',
-            title: navigation.state.params.outlet.name,
-            headerStyle:{
-                borderWidth:0,
-                height: 50,
-                margin: 0,
-                position: 'absolute',
-                backgroundColor: '#efebe9',
-                textAlign: 'center',
-                flex: 1
 
-            },
-            headerTitleStyle: {
-                fontSize:25,
-                fontWeight: '300',
-                color: 'black',
-                //paddingLeft: 30,
+//explore screen stack
+const AppNavigator2 = createStackNavigator({
+  screen9:{
+    screen:Explore,
+    navigationOptions:{header: null}
+  },
+  screen2:Nodisplay,
+  screen18:Outletaddress,
+  screen19:{
+    screen:Outletdetails,
+    navigationOptions:({navigation}) => ({
+      title: navigation.state.params.outlet.name,
+      headerStyle:{
+        backgroundColor:'#fff'
+      },
+      headerTitleStyle:{
+        fontSize : 20,
+        color: 'black',
+        fontWeight:'100'
+      },
+    
+    }),
+  },
+  screen20: Confirmation,
+  screen21: AboutEvent,
+  
+  screen22: EventConfirm,
+})
 
-            },
+//account drawer
+const AppNavigator1 = createDrawerNavigator({
+  Account:Account,
+  Points: Points,
+  'Upcoming Bookings': Upcoming,
+  'Expired Bookings': Expired,
+  'Contact Us': Contact 
+},{})
 
-        })
-    },
-
-},{headerLayoutPreset: 'center'})
-
-// bottom tabs
+//main screen bottom tab
 const AppNavigator = createBottomTabNavigator({
-    NearMe: {
-        screen: NearStack,
-        navigationOptions: {
-            tabBarIcon: () => (
-                <Image
-                    source={NearIcon}
-                    style={{height: 30, width: 30}}
-                />
-            ),
-        },
+  NearMe: {
+    screen: AppNavigator5,
+    navigationOptions: {
+      tabBarIcon:() => (
+        <Image source = {NearIcon} style = {{ height : 30 , width : 30 }}/>
+    )
     },
-
-    Account: {
-        screen: AccStack,
-        navigationOptions: {
-            tabBarIcon: () => (
-                <Image
-                    source={AccIcon}
-                    style={{height: 30, width: 30}}
-                />
-            ),
-        },
+  },
+  Explore: {
+    screen:AppNavigator2,
+    navigationOptions:{
+      tabBarIcon: () => (
+        <Image source = {ExpIcon} style = {{height : 30 , width : 30}}/>
+    )
     },
-}, {
-    tabBarOptions: {
-        activeTintColor: 'black',
-        activeBackgroundColor: '#f5f5f5',
-        showIcon: true,
-        labelStyle: {
-            fontWeight: '200',
-        },
-        showLabel: true,
-
+  },
+  EandO: {
+    screen:AppNavigator3,
+    navigationOptions: {
+      tabBarIcon: () => (
+        <Image source = {EOIcon} style={{height : 30, width:30}}/>
+      )
     },
-});
+  },
+  Account: {
+    screen:AppNavigator1,
+    navigationOptions:{
+      tabBarIcon : () => (
+        <Image source = {AccIcon} style = {{ height : 30 , width : 30}}/>
+    )
+    }
+  }
+},{
+  tabBarOptions:{
+    activeBackgroundColor:'#f5f5f5',
+    activeTintColor:'black',
+    labelStyle:{
+      fontWeight: '200',
+    }
+  },
+})
 
-const finalStack = createStackNavigator(
-    {
-        screen1: {
-            screen: Login,
-            navigationOptions: {
-                header: null,
-            },
-        },
-        screen2: {
-            screen: AppNavigator,
-            navigationOptions: {
-                header: null,
-            },
-        },
-    },
-    {},
-);
 
-const AppContainer = createAppContainer(finalStack);
+const final = createStackNavigator({
+  Login:{
+    screen:Login,
+    navigationOptions:{header:null}
+  },
+  'Sign Up':SignUp,
+  OTP:Otp,
+  screen4:{
+    screen:AppNavigator,
+    navigationOptions:{header:null}
+  },
+
+})
+
+const AppContainer = createAppContainer(final);
 const TabContainer = createAppContainer(AppNavigator);
 
+
 export default class App extends Component {
-    state = {loggedIn: null};
-
-    componentWillMount() {
-        if (!firebase.apps.length) {
-            firebase.initializeApp({
-                apiKey: 'AIzaSyD8e5uCCTmuFjn-CmKNaxdmaNLeZJ6UO9M',
-                authDomain: 'shuttle-34268.firebaseapp.com',
-                databaseURL: 'https://shuttle-34268.firebaseio.com',
-                projectId: 'shuttle-34268',
-                storageBucket: '',
-                messagingSenderId: '241387829278',
-                appId: '1:241387829278:web:1e85379f28043062',
-            });
+  state = {loggedIn:null}
+  componentWillMount(){
+    if(!firebase.apps.length){
+    firebase.initializeApp({
+            apiKey: "AIzaSyC4wbk8ndm8aqNFRMoriSPwXu04I0yqojs",
+            authDomain: "foodzilla-9d7c2.firebaseapp.com",
+            databaseURL: "https://foodzilla-9d7c2.firebaseio.com",
+            projectId: "foodzilla-9d7c2",
+            storageBucket: "foodzilla-9d7c2.appspot.com",
+            messagingSenderId: "140164895707",
+            appId: "1:140164895707:web:3cbdb53338de8d03"
+          });
         }
+    firebase.auth().onAuthStateChanged((user)=>{
+      if(user){
+        this.setState({loggedIn:true})
+      }else{
+        this.setState({loggedIn:false})
+      }
 
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                this.setState({loggedIn: true});
-            } else {
-                this.setState({loggedIn: false});
-            }
-        });
+    });
     }
 
     render() {
-        switch (this.state.loggedIn) {
-            default:
-                return <SplashScreen/>;
-            case true:
-                return <TabContainer/>;
-            case false:
-                return (
-                    <AppContainer
-                        ref={navigatorRef => {
-                            setTopLevelNavigator(navigatorRef);
-                        }}
-                    />
-                );
-        }
-    }
+      switch(this.state.loggedIn){
+        case true:
+            return <TabContainer/>
+        case false:
+            return (<AppContainer
+            ref={(navigatorRef) => {
+              setTopLevelNavigator(navigatorRef);
+            }}
+          />
+            );
+          
+        default:
+          return(
+          
+          <SplashScreen/>
+          );
+      }
+  }
 }
 
-const style = {
-    headerStyle: {
-        borderWidth: 0,
-        height: 50,
-        margin: 0,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#efebe9',
-    },
-    headerText: {
-        fontSize: 25,
-        fontWeight: '300',
-        color: 'black',
-    },
+
+//styling for the events and offers page
+const styles = {
+  textStyle : {
+      alignSelf : 'center',
+      fontSize : 20,
+      paddingTop : 10,
+      color: 'black',
+
+  },
+  headerStyle :{
+      flex: -1, 
+      backgroundColor : '#fff', 
+      paddingBottom: 10,
+      borderColor :'black',
+      shadowColor: '#000',
+      shadowOffset: { width: 0 , height: 2},
+      shadowOpacity: 0.9,
+      shadowRadius: 2,
+
+  },
 };
+
+
+
+//export default createAppContainer(AppNavigator);
