@@ -1,128 +1,98 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
-import React, {Component} from 'react';
-import DrawerIcon from './logo/drawerMenu.png';
+import React,{Component} from 'react';
+import { Text , View , Image  , TouchableOpacity } from 'react-native';
+import Logo from './Logo/account.png';
+import account from './Logo/account.png';
+import drawerbutton from './Logo/drawerbutton.png';
 import firebase from 'firebase';
 
-class Account extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            fname: '',
-            lname: '',
-            email: '',
-            phone: '',
-            image: '',
-        };
-    }
 
-    componentWillMount() {
-        const uid = firebase.auth().currentUser.uid;
-        firebase.database().ref('users/' + uid).on('value', (data) => {
-            const user = data.toJSON();
+
+class Account extends Component{
+    state = {
+        email: '',
+        phone: '',
+        fname: '',
+        lname: '',
+        image: '',
+    }
+    componentWillMount(){
+        uid = firebase.auth().currentUser.uid
+        firebase.database().ref('users/' + uid).on('value',(data) => {
+            const user = data.toJSON()
             this.setState({
                 fname: user.fname,
                 lname: user.lname,
-                email: user.email,
                 phone: user.phone,
                 image: user.image,
-            });
-        });
+                email: user.email,
+            })
+        })
     }
-
-    onLogout() {
-        firebase.auth().signOut()
-            .then(() => console.log('LOGGED OUT'));
-    }
-
     static navigationOptions = {
-        headerLeft: ({navigation}) => (
-            <TouchableOpacity onPress={this.props.navigation.openDrawer()}>
-                <Image source={DrawerIcon} style={{height: 25, width: 25, marginLeft: 10}}/>
-            </TouchableOpacity>
-        ),
-    };
-
-    render() {
-
-        return (
+        tabBarIcon : () => (
+            <Image source = {Logo} style = {{ height : 30 , width : 30}}/>
+        )
+    }
+    render(){
+        const {textStyle} = styles;
+        return(
             <View>
-                <View style={style.headerStyle}>
-                    <TouchableOpacity onPress={() => this.props.navigation.openDrawer()}>
-                        <Image source={DrawerIcon} style={{height: 25, width: 25, marginLeft: 10}}/>
-                    </TouchableOpacity>
-                    <Text style={style.headerText}>
-                        Account
-                    </Text>
+            <View style = {{flex: -1, 
+                backgroundColor : '#fff', 
+                paddingBottom: 10,
+                borderColor :'black',
+                shadowColor: '#000',
+                shadowOffset: { width: 0 , height: 2},
+                shadowOpacity: 0.9,
+                shadowRadius: 2,
+                elevation: 10,
+                marginBottom: 10,
+                flexDirection:'row',
+                alignItems:'center',
+                }}>
+                <View style = {{alignItems:'flex-start',paddingLeft:10,justifyContent:'center',paddingTop:10}}>
+                <TouchableOpacity onPress = {() => this.props.navigation.openDrawer()}>
+                <Image source ={drawerbutton} style = {{alignItems:'flex-start'}}/>
+                </TouchableOpacity>
                 </View>
-                <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 60}}>
-                    <Image
-                        source={{uri: this.state.image}}
-                        style={{
-                            height: 250,
-                            width: 250,
-                            margin: 5,
-                            borderRadius: 200,
-                            borderWidth: 1,
-                            borderColor: 'black',
-                        }}
-                    />
-                    <TouchableOpacity>
-                        <Text style={{fontSize: 15, color: 'black', fontWeight: '300'}}>
-                            Change Display Picture
-                        </Text>
-                    </TouchableOpacity>
-
-                    <Text style={{fontSize: 30, color: 'black', fontWeight: '300', marginTop: 30}}>
-                        {this.state.fname} {this.state.lname}
-                    </Text>
-                    <Text style={{fontSize: 15, color: 'black', fontWeight: '300', marginTop: 10}}>
-                        {this.state.phone}
-                    </Text>
-                    <Text style={{fontSize: 15, color: 'black', fontWeight: '300', marginTop: 10}}>
-                        {this.state.email}
-                    </Text>
-                    <TouchableOpacity style={style.proceedStyle} onPress={() => this.onLogout()}>
-                        <Text style={style.proceedTextStyle}>
-                            LOG OUT
-                        </Text>
-                    </TouchableOpacity>
+                <View style = {{justifyContent:'center',alignItems:'center',paddingLeft:90,}}>
+                <Text style = {textStyle}>Account</Text>
                 </View>
+            </View>
+            <View>
+            <Image source = {{uri:this.state.image}} style = {{height:250,
+                width:250,
+                margin:5,
+                alignSelf:'center',
+                borderColor:'black',
+                borderWidth:1,
+                borderRadius:200}}/>
+            </View>
+            <View style = {{justifyContent:'center',alignItems:'center',padding:10}}>
+                <TouchableOpacity>
+                <Text style ={{fontSize : 15,fontWeight:'400',}}>Edit</Text>
+                </TouchableOpacity>
+                <Text style ={{padding:20,fontSize:25,fontWeight:'500',color : 'black'}}>{this.state.fname} {this.state.lname}</Text>
+                <Text style= {{fontSize : 15 , color: 'black'}}>Mobile Number : {this.state.phone}</Text>
+                <Text style = {{padding :10 , fontSize:15,color: 'black'}}>Email Id : {this.state.email}</Text>
+                <TouchableOpacity onPress = {()=>firebase.auth().signOut()}>
+                <Text style ={{fontSize : 15,fontWeight:'400',}}>Log Out</Text>
+                </TouchableOpacity>
+            </View>
             </View>
         );
     }
 }
 
-const style = {
-    headerStyle: {
-        borderWidth: 0,
-        height: 50,
-        margin: 0,
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        backgroundColor: '#efebe9',
-        flexDirection: 'row',
-    },
-    headerText: {
-        fontSize: 25,
-        fontWeight: '300',
-        color: 'black',
-        padding: 100,
-    },
-    proceedStyle: {
-        margin: 20,
-        backgroundColor: '#ff953e',
-        alignItems: 'center',
-        justifyContent: 'center',
-        elevation: 20,
-        width: 200,
-        marginTop: 50,
-    },
-    proceedTextStyle: {
-        padding: 15,
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#480d0d',
+const styles = {
+    textStyle : {
+        alignSelf : 'center',
+        fontSize : 20,
+        paddingTop : 10,
+        color:'black',
+
     },
 };
+
 
 export default Account;

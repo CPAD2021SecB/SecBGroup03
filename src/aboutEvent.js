@@ -1,79 +1,77 @@
-import { View, Text, TouchableOpacity, Image, Dimensions, Linking } from 'react-native';
-import React , {Component} from 'react';
+import React,{Component} from 'react';
+import { View , Text , Image , TouchableOpacity , Dimensions } from 'react-native';
+import BookEvent from './BookEvent';
+
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const imageHeight = (Math.round(Dimensions.get('window').height))/4
 
 export default class AboutEvent extends Component{
-    constructor(props){
-        super(props);
-        // const event = this.props.navigation.getParam('event')
-    }
     render(){
-        event = this.props.navigation.getParam('event')
-        outlet = this.props.navigation.getParam('outlet')
-        thenMoveTo = this.props.navigation.getParam('thenMoveTo')
+        events = this.props.navigation.getParam('events')
         return(
             <View>
-                <Image source={{uri : event.image}} style={{width: screenWidth, height: imageHeight}}/>
+                <Image source={{uri : events.image}} style={{width: screenWidth, height: imageHeight}}/>
 
                 <Text style={style.nameStyle}>
-                    {event.name}
+                {events.name}
                 </Text>
                 <Text style={style.descriptionStyle}>
-                    {event.description}
+                {events.description}
                 </Text>
                 <Text style={style.DTCStyle}>
-                    Date: {event.date}
+                Date: {events.date}
                 </Text>
                 <Text style={style.DTCStyle}>
-                    Time: {event.time}
+                Time: {events.time}
                 </Text>
                 <Text style={style.DTCStyle}>
-                    Cover Charge: ₹{event.cover}
+                Cover Charge: ₹{events.cover}
                 </Text>
-                <TouchableOpacity style={style.proceedStyle} onPress={() => this.props.navigation.navigate(thenMoveTo, {event: this.props.navigation.getParam('event'), outlet: this.props.navigation.getParam('outlet')})}>
-                    <Text style={style.proceedTextStyle}>
-                        GET NOW
-                    </Text>
+                <TouchableOpacity style={style.proceedStyle} onPress={() => this.props.navigation.navigate(this.props.navigation.getParam('thenMoveTo'), 
+                {events: this.props.navigation.getParam('events'), outlet: this.props.navigation.getParam('outlet')})}>
+                <Text style={style.proceedTextStyle}>
+                GET NOW
+                </Text>
                 </TouchableOpacity>
             </View>
         );
     }
 }
 
+
 const style = {
     nameStyle : {
-        fontSize: 30,
-        marginLeft: 10,
-        fontWeight: 'bold',
-        color: 'black'
+    fontSize: 30,
+    marginLeft: 10,
+    fontWeight: 'bold',
+    color: 'black'
     },
     descriptionStyle: {
-        fontSize: 15, 
-        marginLeft: 10,
-        marginBottom: 15,
-        marginTop: 8
+    fontSize: 15, 
+    marginLeft: 10,
+    marginBottom: 15,
+    marginTop: 8
     },
     DTCStyle: {
-        color: 'black',
-        fontSize: 20,
-        margin: 10
+    color: 'black',
+    fontSize: 20,
+    margin: 10
     },
     proceedStyle: {
-        marginTop: 80, 
-        backgroundColor: '#ff953e', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        elevation: 20, 
-        width: 200, 
-        marginLeft: 80
+    marginTop: 80, 
+    backgroundColor: '#ff8a65', 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    elevation: 20, 
+    width: 200, 
+    marginLeft: 80
     },
     proceedTextStyle: {
-        padding: 15, 
-        fontSize: 20, 
-        fontWeight: 'bold', 
-        color: '#480d0d'
+    padding: 15, 
+    fontSize: 20, 
+    fontWeight: 'bold', 
+    color: 'black'
     },
-
-}
+    
+    }
