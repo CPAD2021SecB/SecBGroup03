@@ -1,26 +1,13 @@
-import React, {Component} from 'react'
-import {View, Text, Image, Dimensions, StatusBar} from 'react-native'
-import { NavigationActions, StackActions } from 'react-navigation'
-
-const screenWidth = Math.round(Dimensions.get('window').width);
-const screenHeight = Math.round(Dimensions.get('window').height);
-
-/* const resetAction = StackActions.reset({
-    index: 0,
-    actions: [
-        NavigationActions.navigate({routeName: 'screen11'})
-    ]
-}) */
+import React , {Component} from 'react';
+import {View,Text,Image, StatusBar} from 'react-native';
 
 export default class SplashScreen extends Component{
-
     render(){
-
         return(
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ff953e'}}>
-                <StatusBar backgroundColor='#ff953e'/>
-                <Image source={{uri: 'https://imgur.com/4jzwEFs.jpg'}}
-                       style={{flex: 1, height: 400, width: 300, resizeMode: 'contain'}}/>
+            <View style ={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'#c11e1e'}}>
+                <StatusBar backgroundColor='#c11e1e'/>
+                <Image source = {{uri:'https://i.imgur.com/2qYtn4b.jpg'}}
+                style ={{flex:1,height:400,width:300,resizeMode:'contain'}}/>
             </View>
         );
     }
